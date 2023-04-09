@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { EllipsisHorizontalIcon as Dots } from '@heroicons/react/24/solid'
+import { HeartIcon, ChatBubbleOvalLeftEllipsisIcon as ChatIcon, BookmarkIcon } from '@heroicons/react/24/outline'
 
 const Post = ({
     post: { 
@@ -32,6 +33,15 @@ const Post = ({
             </div>
             {/* Post image */}
             <img src={image} alt="" className="object-cover w-full" />
+
+            {/* Post Buttons */}
+            <div className="flex justify-between px-4 pt-4">
+                <div className="flex space-x-4">
+                    <HeartIcon className="btn" />
+                    <ChatIcon className="btn" />
+                </div>
+                <BookmarkIcon className="btn" />
+            </div>
         </div>
     );
 }
