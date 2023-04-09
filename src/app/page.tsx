@@ -1,6 +1,13 @@
+import Header from "@/components/Header";
 
 export default function Home() {
   return (
-    <main><h1>Hello Insta</h1></main>
+    <>
+        {/* Header */}
+        <Header />
+        {/* Feed */}
+
+        {/* Modal */}
+    </>
   )
 }
