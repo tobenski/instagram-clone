@@ -9,7 +9,9 @@ const nextConfig = {
       'i.pinimg.com',
       'i.pravatar.cc',
       'plus.unsplash.com',
-      'images.unsplash.com'
+      'images.unsplash.com',
+      'superviral.com.au',
+      'socodigital.com'
       ]
   }
 }
