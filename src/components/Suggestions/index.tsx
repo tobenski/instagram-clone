@@ -24,7 +24,7 @@ const Suggestions = () => {
                 <button className="text-gray-600 font-semibold">See All</button>
             </div>
             {suggestions.map(suggestion=>(
-                <Suggestion suggestion={suggestion} />
+                <Suggestion key={suggestion.id} suggestion={suggestion} />
             ))}
         </div>
     );
