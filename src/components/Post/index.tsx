@@ -1,9 +1,11 @@
+'use client'
 import Image from "next/image";
 import { EllipsisHorizontalIcon as Dots } from '@heroicons/react/24/solid'
 import { HeartIcon, ChatBubbleOvalLeftEllipsisIcon as ChatIcon, BookmarkIcon, FaceSmileIcon } from '@heroicons/react/24/outline'
+import { useSession } from "next-auth/react";
 
 const Post = ({post}:{post:any}) => {
-
+    const {data: session } = useSession();
     return (
         <div className="bg-white my-7 border rounded-md">
             {/* Post Header */}
@@ -24,27 +26,31 @@ const Post = ({post}:{post:any}) => {
             </div>
 
             {/* Post Buttons */}
-            <div className="flex justify-between px-4 pt-4">
-                <div className="flex space-x-4">
-                    <HeartIcon className="btn" />
-                    <ChatIcon className="btn" />
+            { session && (
+                <div className="flex justify-between px-4 pt-4">
+                    <div className="flex space-x-4">
+                        <HeartIcon className="btn" />
+                        <ChatIcon className="btn" />
+                    </div>
+                    <BookmarkIcon className="btn" />
                 </div>
-                <BookmarkIcon className="btn" />
-            </div>
+            )}
 
             {/* Caption */}
             <p className="p-5 truncate"><span className="font-bold mr-2">{post.data().username}</span>{post.data().caption}</p>
 
             {/* Comments imput box */}
-            <form className="flex items-center p-4">
-                <FaceSmileIcon className="h-7" />
-                <input 
-                    type="text" 
-                    placeholder="Enter your comment..." 
-                    className="border-none flex-1 focus:ring-0"
-                    />
-                <button className="text-blue-400 font-bold">Post</button>
-            </form>
+            {session && (
+                <form className="flex items-center p-4">
+                    <FaceSmileIcon className="h-7" />
+                    <input 
+                        type="text" 
+                        placeholder="Enter your comment..." 
+                        className="border-none flex-1 focus:ring-0"
+                        />
+                    <button className="text-blue-400 font-bold">Post</button>
+                </form>
+            )}
         </div>
     );
 }
