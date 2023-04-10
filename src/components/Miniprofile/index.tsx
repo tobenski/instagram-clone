@@ -14,7 +14,8 @@ const MiniProfile = () => {
                 className="rounded-full border p-[2px]"
             />
             <div className="flex-1 ml-4">
-                <h2 className="font-bold">{session?.user?.name || ''} </h2>
+            {/* @ts-ignore */}
+                <h2 className="font-bold">{session?.user?.username || ''} </h2>
                 <h3 className="text-sm text-gray-400">Welcome to Instagram</h3>
             </div>
             <button className="font-semibold text-blur-400 text-sm" onClick={()=>signOut()}>Sign Out</button>
