@@ -2,11 +2,14 @@ import MiniProfile from "../Miniprofile";
 import Posts from "../Posts";
 import Stories from "../Stories";
 import Suggestions from "../Suggestions";
+import Wrapper from "./Wrapper";
+
 
 
 const Feed = () => {
+    // const {data:session} = useSession();
     return (
-        <main className="grid grid-cols-1 md:grid-cols-3 md:max-w-6xl mx-auto">
+        <Wrapper>
             <section className="md:col-span-2">
                 {/* Stories */}
                 <Stories />
@@ -22,7 +25,8 @@ const Feed = () => {
                 </div>
                 
             </section>
-        </main>
+        {/* </main> */}
+        </Wrapper>
     );
 }
 

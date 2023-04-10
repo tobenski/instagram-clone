@@ -6,7 +6,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 const Header = () => {
     const {data:session} = useSession();
-    console.log(session);
+    // console.log(session);
     
     return (
         <div className="shadow-sm border-b sticky top-0 bg-white z-30">
@@ -16,7 +16,8 @@ const Header = () => {
                     <Image 
                         src={`https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1280px-Instagram_logo.svg.png`} 
                         alt="Instagram Logo" 
-                        fill 
+                        fill
+                        sizes="100vw"
                         className="object-contain"
                         />
                 </div>
@@ -25,6 +26,7 @@ const Header = () => {
                         src={`https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/800px-Instagram_logo_2016.svg.png`} 
                         alt="Instagram Logo" 
                         fill 
+                        sizes="100vw"
                         className="object-contain"
                         />
                 </div>
@@ -44,8 +46,8 @@ const Header = () => {
                             <Image 
                                 src={session.user?.image || ''} 
                                 alt="user image" 
-                                height={10}
-                                width={10}
+                                height={40}
+                                width={40}
                                 className="h-100 w-10 rounded-full object-contain cursor-pointer"
                                 onClick={() => signOut()}
                                 />   

@@ -1,20 +1,23 @@
+'use client'
+import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 
 const MiniProfile = () => {
+    const {data:session } = useSession();
     return (
         <div className="flex items-center justify-between mt-14 ml-10">
             <Image 
-                src={'https://i.pinimg.com/280x280_RS/31/ea/ec/31eaec68556ad38582536cf34f228df9.jpg'} 
-                alt="" 
+                src={session?.user?.image || ''} 
+                alt="user image" 
                 height={64} 
                 width={64} 
                 className="rounded-full border p-[2px]"
             />
             <div className="flex-1 ml-4">
-                <h2 className="font-bold">UserName</h2>
-                <h3 className="text-sm text-gray-400">Velcome to Instagram</h3>
+                <h2 className="font-bold">{session?.user?.name || ''} </h2>
+                <h3 className="text-sm text-gray-400">Welcome to Instagram</h3>
             </div>
-            <button className="font-semibold text-blur-400 text-sm">Sign Out</button>
+            <button className="font-semibold text-blur-400 text-sm" onClick={()=>signOut()}>Sign Out</button>
         </div>
     );
 }
