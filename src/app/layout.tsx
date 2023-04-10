@@ -1,4 +1,5 @@
 import './globals.css'
+import MySessionProvider from './mySessionProvider'
 
 export const metadata = {
   title: 'Instagram App',
@@ -6,14 +7,19 @@ export const metadata = {
 
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function RootLayout({children}: RootLayoutProps) {
+  
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <MySessionProvider>
+          {children}
+        </MySessionProvider>
+      </body>
     </html>
   )
 }

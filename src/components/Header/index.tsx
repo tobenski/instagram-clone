@@ -1,8 +1,13 @@
+'use client'
 import Image from "next/image";
 import { MagnifyingGlassIcon, PlusCircleIcon } from '@heroicons/react/24/outline'
 import { HomeIcon } from '@heroicons/react/24/solid'
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Header = () => {
+    const {data:session} = useSession();
+    console.log(session);
+    
     return (
         <div className="shadow-sm border-b sticky top-0 bg-white z-30">
             <div className="flex items-center justify-between max-w-6xl mx-4 lg:mx-auto"> 
@@ -33,13 +38,22 @@ const Header = () => {
                 {/* right */}
                 <div className="flex space-x-4 items-center">
                     <HomeIcon className="hidden md:inline-flex h-5 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
-                    <PlusCircleIcon className="h-5 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
-                    <Image 
-                        src={'https://i.pinimg.com/280x280_RS/31/ea/ec/31eaec68556ad38582536cf34f228df9.jpg'} 
-                        alt="user image" 
-                        height={10}
-                        width={10}
-                        className="h-100 w-10 rounded-full object-contain cursor-pointer" />
+                    {session ? (
+                        <>
+                            <PlusCircleIcon className="h-5 cursor-pointer hover:scale-125 transition-transform duration-200 ease-out" />
+                            <Image 
+                                src={session.user?.image || ''} 
+                                alt="user image" 
+                                height={10}
+                                width={10}
+                                className="h-100 w-10 rounded-full object-contain cursor-pointer"
+                                onClick={() => signOut()}
+                                />   
+                        </>
+                    ): (
+                        <button onClick={()=> signIn()}>Sign in</button>
+                    )}
+                    
                 </div>
             </div>
         </div>

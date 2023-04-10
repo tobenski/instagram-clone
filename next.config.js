@@ -11,7 +11,8 @@ const nextConfig = {
       'plus.unsplash.com',
       'images.unsplash.com',
       'superviral.com.au',
-      'socodigital.com'
+      'socodigital.com',
+      'lh3.googleusercontent.com'
       ]
   }
 }
