@@ -3,9 +3,27 @@ import Image from "next/image";
 import { EllipsisHorizontalIcon as Dots } from '@heroicons/react/24/solid'
 import { HeartIcon, ChatBubbleOvalLeftEllipsisIcon as ChatIcon, BookmarkIcon, FaceSmileIcon } from '@heroicons/react/24/outline'
 import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "@/firebase";
 
 const Post = ({post}:{post:any}) => {
-    const {data: session } = useSession();
+    const {data: session } : { data: any} = useSession();
+    const [comment, setComment] = useState("")
+
+    const sendComment = async (e:any) => {
+        e.preventDefault();
+        const commentToSend = comment;
+        setComment("");
+        await addDoc(collection(db, "posts", post.id, "comments"), {
+            comment: commentToSend,
+            username: session?.user?.username,
+            userImage: session?.user?.image,
+            timestamp: serverTimestamp(),
+        })
+
+    }
+
     return (
         <div className="bg-white my-7 border rounded-md">
             {/* Post Header */}
@@ -47,8 +65,10 @@ const Post = ({post}:{post:any}) => {
                         type="text" 
                         placeholder="Enter your comment..." 
                         className="border-none flex-1 focus:ring-0"
+                        value={comment}
+                        onChange={(e)=> {setComment(e.target.value)}}
                         />
-                    <button className="text-blue-400 font-bold">Post</button>
+                    <button onClick={sendComment} disabled={!comment.trim()} className="text-blue-400 font-bold disabled:text-blue-200">Post</button>
                 </form>
             )}
         </div>
