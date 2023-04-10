@@ -12,7 +12,8 @@ const nextConfig = {
       'images.unsplash.com',
       'superviral.com.au',
       'socodigital.com',
-      'lh3.googleusercontent.com'
+      'lh3.googleusercontent.com',
+      'firebasestorage.googleapis.com'
       ]
   }
 }
