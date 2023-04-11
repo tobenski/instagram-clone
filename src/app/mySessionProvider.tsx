@@ -1,5 +1,4 @@
 'use client'
-import { SessionProvider } from 'next-auth/react'
 import { RecoilRoot } from 'recoil';
 
 export interface MySessionProps {
@@ -8,11 +7,9 @@ export interface MySessionProps {
 
 const MySessionProvider = ({ children } : MySessionProps) => {
 	return (
-		<SessionProvider>
 			<RecoilRoot>
 				{children}
 			</RecoilRoot>
-		</SessionProvider>
 	)
 }
 

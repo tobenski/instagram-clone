@@ -2,18 +2,20 @@
 import Image from "next/image";
 import { EllipsisHorizontalIcon as Dots, HeartIcon as FilledHeart } from '@heroicons/react/24/solid'
 import { HeartIcon, ChatBubbleOvalLeftEllipsisIcon as ChatIcon, BookmarkIcon, FaceSmileIcon } from '@heroicons/react/24/outline'
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { DocumentData, addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import Moment from 'react-moment';
+import { userState } from "@/atom/userAtom";
+import { useRecoilState } from 'recoil'
 
 const Post = ({post}:{post:any}) => {
-    const {data: session } : { data: any} = useSession();
     const [comment, setComment] = useState("")
     const [comments, setComments] = useState<DocumentData[]>([])
     const [likes, setLikes] = useState<any[]>([]);
     const [hasLiked, setHasLiked] = useState<boolean>(false)
+    // @ts-ignore
+    const [currentUser, setCurrentUser] = useRecoilState<DocumentData | null>(userState)
 
     useEffect(() => {
         const unsubscribe = onSnapshot(
@@ -33,16 +35,16 @@ const Post = ({post}:{post:any}) => {
 
     useEffect(() => {
         setHasLiked(
-            likes.findIndex(like=>like.id === session?.user.uid) !== -1
+            likes.findIndex(like=>like.id === currentUser?.uid) !== -1
         )
     },[likes])
 
     const likePost = async () => {
         if(hasLiked) {
-            await deleteDoc(doc(db, "posts", post.id, "likes", session?.user.uid ))    
+            await deleteDoc(doc(db, "posts", post.id, "likes", currentUser?.uid ))    
         } else {
-            await setDoc(doc(db, "posts", post.id, "likes", session?.user.uid),{
-                username: session.user.username
+            await setDoc(doc(db, "posts", post.id, "likes", currentUser?.uid),{
+                username: currentUser?.username ||''
             })
         }
     }
@@ -52,8 +54,8 @@ const Post = ({post}:{post:any}) => {
         setComment("");
         await addDoc(collection(db, "posts", post.id, "comments"), {
             comment: commentToSend,
-            username: session?.user?.username,
-            userImage: session?.user?.image,
+            username: currentUser?.username,
+            userImage: currentUser?.userImg,
             timestamp: serverTimestamp(),
         })
 
@@ -79,7 +81,7 @@ const Post = ({post}:{post:any}) => {
             </div>
 
             {/* Post Buttons */}
-            { session && (
+            { currentUser && (
                 <div className="flex justify-between px-4 pt-4">
                     <div className="flex space-x-4">
                         {hasLiked ? (
@@ -115,7 +117,7 @@ const Post = ({post}:{post:any}) => {
                 </div>
             ) }
             {/* Comments imput box */}
-            {session && (
+            {currentUser && (
                 <form className="flex items-center p-4">
                     <FaceSmileIcon className="h-7" />
                     <input 

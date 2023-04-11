@@ -1,16 +1,9 @@
 import Header from '@/components/Header'
-import { getProviders, signIn } from 'next-auth/react'
+
 import Image from 'next/image'
 import SignInBtn from './SignInBtn'
 
-// const getData = async () => {
-
-//     return providers;
-// }
-
 const Signin = async () => {
-	const providers = await getProviders()
-
 	return (
 		<>
 			<Header />
@@ -23,25 +16,19 @@ const Signin = async () => {
 					className='hidden md:inline-flex object-cover rotate-6 md:w-48'
 				/>
 				<div className=''>
-					{Object.values(providers).map((provider) => {
-						return (
-							<div
-								key={provider.name}
-								className='flex flex-col items-center'>
-								<Image
-									src='https://socodigital.com/wp-content/uploads/2021/03/Instagram.png'
-									alt='instagram logo'
-									height={128}
-									width={128}
-									className='w-32 object-cover'
-								/>
-								<p className='text-sm italic my-10 text-center'>
-									This app is created for learning purposes
-								</p>
-								<SignInBtn provider={provider} />
-							</div>
-						)
-					})}
+					<div className='flex flex-col items-center'>
+						<Image
+							src='https://socodigital.com/wp-content/uploads/2021/03/Instagram.png'
+							alt='instagram logo'
+							height={128}
+							width={128}
+							className='w-32 object-cover'
+						/>
+						<p className='text-sm italic my-10 text-center'>
+							This app is created for learning purposes
+						</p>
+						<SignInBtn />
+					</div>
 				</div>
 			</div>
 		</>

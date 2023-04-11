@@ -1,10 +1,12 @@
 'use client'
-import { useSession } from "next-auth/react";
+import { userState } from "@/atom/userAtom";
+import { useRecoilState } from 'recoil'
 
 const Wrapper = ({children}:{children: React.ReactNode}) => {
-    const {data:session} = useSession();
+    // @ts-ignore
+    const [currentUser, setCurrentUser] = useRecoilState<DocumentData | null>(userState)
     return (
-        <main className={session ? "grid grid-cols-1 md:grid-cols-3 md:max-w-6xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 md:max-w-3xl mx-auto"}>
+        <main className={currentUser ? "grid grid-cols-1 md:grid-cols-3 md:max-w-6xl mx-auto" : "grid grid-cols-1 md:grid-cols-2 md:max-w-3xl mx-auto"}>
             {children}
         </main>
     );
