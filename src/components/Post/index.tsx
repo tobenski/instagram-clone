@@ -1,10 +1,10 @@
 'use client'
 import Image from "next/image";
-import { EllipsisHorizontalIcon as Dots } from '@heroicons/react/24/solid'
+import { EllipsisHorizontalIcon as Dots, HeartIcon as FilledHeart } from '@heroicons/react/24/solid'
 import { HeartIcon, ChatBubbleOvalLeftEllipsisIcon as ChatIcon, BookmarkIcon, FaceSmileIcon } from '@heroicons/react/24/outline'
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { DocumentData, addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { DocumentData, addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import Moment from 'react-moment';
 
@@ -12,6 +12,8 @@ const Post = ({post}:{post:any}) => {
     const {data: session } : { data: any} = useSession();
     const [comment, setComment] = useState("")
     const [comments, setComments] = useState<DocumentData[]>([])
+    const [likes, setLikes] = useState<any[]>([]);
+    const [hasLiked, setHasLiked] = useState<boolean>(false)
 
     useEffect(() => {
         const unsubscribe = onSnapshot(
@@ -20,6 +22,30 @@ const Post = ({post}:{post:any}) => {
         })
         
     },[])
+
+    useEffect(() => {
+      const unsubscribe = onSnapshot(
+        collection(db, "posts", post.id, "likes" ),
+        (snapshot) => setLikes(snapshot.docs)
+      )
+    }, [])
+    
+
+    useEffect(() => {
+        setHasLiked(
+            likes.findIndex(like=>like.id === session?.user.uid) !== -1
+        )
+    },[likes])
+
+    const likePost = async () => {
+        if(hasLiked) {
+            await deleteDoc(doc(db, "posts", post.id, "likes", session?.user.uid ))    
+        } else {
+            await setDoc(doc(db, "posts", post.id, "likes", session?.user.uid),{
+                username: session.user.username
+            })
+        }
+    }
     const sendComment = async (e:any) => {
         e.preventDefault();
         const commentToSend = comment;
@@ -56,7 +82,11 @@ const Post = ({post}:{post:any}) => {
             { session && (
                 <div className="flex justify-between px-4 pt-4">
                     <div className="flex space-x-4">
-                        <HeartIcon className="btn" />
+                        {hasLiked ? (
+                            <FilledHeart onClick={likePost} className="text-red-400 btn" />
+                        ) : (
+                            <HeartIcon onClick={likePost} className="btn" />
+                        )}
                         <ChatIcon className="btn" />
                     </div>
                     <BookmarkIcon className="btn" />
